@@ -1,0 +1,7 @@
+dataset/Data/RAW_dataset/*
+!dataset/Data/RAW_dataset/.gitkeep
+dataset/Data/proccessedDataPT/*
+!dataset/Data/proccessedDataPT/.gitkeep
+dataset\Data\preproccessedData.pt
+dataset\Data\preproccessedDataMASKS.pt
+dataset\Data\RAW_dataset\KnowlageDataset

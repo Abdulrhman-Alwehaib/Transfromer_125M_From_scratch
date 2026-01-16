@@ -1,0 +1,4 @@
+batch_size: 64
+learning_rate: 3.0e-4
+epochs: 1
+device: "cuda"
