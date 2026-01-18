@@ -1,6 +1,0 @@
-block_size: proccessedData.shape[1]
-layers: 5
-heads: 4
-d_model: 128
-vocab_size: 6001
-dropRate: 0.1

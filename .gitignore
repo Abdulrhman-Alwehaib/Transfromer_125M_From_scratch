@@ -1,5 +1,5 @@
-dataset/Data/preproccessedData.pt
-dataset/Data/preproccessedDataMASKS.pt
-dataset/Data/RAW_dataset/
-codes/my_decoder_model.pth
+experiments/dataset/Data/preproccessedData.pt
+experiments/dataset/Data/preproccessedDataMASKS.pt
+experiments/dataset/Data/RAW_dataset/
+experiments/codes/my_decoder_model.pth
 
