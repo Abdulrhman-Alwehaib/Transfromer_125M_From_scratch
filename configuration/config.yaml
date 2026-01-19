@@ -18,8 +18,10 @@ data_validation:
 data_transformation:
   root_dir: artifacts/data_transformation
   inputData: artifacts/data_ingestion/raw_data.csv
+  tokenizer: artifacts/data_transformation/
   targetColumns: "text"
-  
+  inputIDS: artifacts/data_transformation/input_ids.npy
+  InputMasks: artifacts/data_transformation/attention_masks.npy
 
 model_trainer:
   root_dir: artifacts/modelTrainer

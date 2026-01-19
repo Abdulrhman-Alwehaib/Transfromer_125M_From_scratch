@@ -14,7 +14,6 @@ class dataTransformation():
         self.constants = constants_class()
         self.config = readYaml(self.constants.CONFIG_FILE_PATH)
         self.dataTransfromationConfig = self.config["data_transfromation"]
-        self.root = self.config["artifacts_root"]
         self.dataFrame = pd.read_csv(self.dataTransfromationConfig["inputData"])
         
 
@@ -24,18 +23,17 @@ class dataTransformation():
         return re.sub(r'[^\u0600-\u06FF\s0-9]', '', text)
     
     def clean_anomalies(self):
-        self.dataFrame = self.dataFrame.dropna()
-        self.dataFrame = self.dataFrame.drop_duplicates()
-        self.dataFrame = self.dataFrame.astype(str)
-        self.dataFrame = self.dataFrame.apply(self.filter_arabic_only)
+        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].dropna()
+        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].drop_duplicates()
+        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].astype(str)
+        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].apply(self.filter_arabic_only)
     
-    def is_valid_line(text: str, min_words=20):
+    def is_valid_line(self,text: str, min_words=20):
         if len(text.split()) < min_words:
             return False
         return True
     
     def normalizationForTinyLLM(self,text: str):
-        self.clean_anomalies()
         if not text or not isinstance(text, str):
             return ""
         text = re.sub(r'<.*?>', '', text)
@@ -52,30 +50,32 @@ class dataTransformation():
 
         return text
     
-    def tokenizationObject(self,df: pd.DataFrame):
-        pass
-
-    
-    def transformation(self):
-        cleanedText = []
-        for i in range(len(self.dataFrame)):
-            if self.is_valid_line(self.dataFrame[self.dataTransfromationConfig["targetColumns"]].iloc[i]):
-                text = self.clean_arabic_for_tiny_model(self.dataFrame[self.dataTransfromationConfig["targetColumns"]].iloc[i]) + " <|endoftext|> "
-                cleanedText.append(text)
-        newDF = pd.DataFrame({self.dataTransfromationConfig["targetColumns"]: cleanedText})
-
-        
-
+    def tokenizationObject(self,seriesObj: pd.Series):
         tokenizerGPT = AutoTokenizer.from_pretrained("gpt2")
 
-        customTokenizer = tokenizerGPT.train_new_from_iterator(newDF[self.dataTransfromationConfig["targetColumns"]], vocab_size=16000,new_special_tokens=["<QUESTION>","<ANSWER>","<|endoftext|>","[PAD]"],
+        customTokenizer = tokenizerGPT.train_new_from_iterator(seriesObj, vocab_size=16000,new_special_tokens=["<QUESTION>","<ANSWER>","<|endoftext|>","[PAD]"],
                                                             initial_alphabet=[])
 
         customTokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
-        customTokenizer.save_pretrained(self.root)
+        customTokenizer.save_pretrained(self.dataTransfromationConfig["tokenizer"])
 
-        full_tokens = customTokenizer(newDF[self.dataTransfromationConfig["targetColumns"]], truncation=False, padding=False)["input_ids"]
+        return customTokenizer
+
+    
+    def transformation(self):
+        self.clean_anomalies()
+        cleanedText = []
+        for i in range(len(self.dataFrame)):
+            if self.is_valid_line(self.dataFrame[self.dataTransfromationConfig["targetColumns"]].iloc[i]):
+                text = self.normalizationForTinyLLM(self.dataFrame[self.dataTransfromationConfig["targetColumns"]].iloc[i]) + " <|endoftext|> "
+                cleanedText.append(text)
+        newDF = pd.DataFrame({self.dataTransfromationConfig["targetColumns"]: cleanedText})
+
+        
+        tokenizer = self.tokenizationObject(newDF[self.dataTransfromationConfig["targetColumns"]])
+
+        full_tokens = tokenizer(newDF[self.dataTransfromationConfig["targetColumns"]], truncation=False, padding=False)["input_ids"]
 
         flattened_ids = [token for sequence in full_tokens for token in sequence]
         block_size = 512
@@ -84,6 +84,9 @@ class dataTransformation():
 
         IDs = torch.tensor(chunks)
         masks = torch.ones_like(IDs)
+
+        torch.save(IDs,self.dataTransfromationConfig["inputIDS"])
+        torch.save(masks,self.dataTransfromationConfig["InputMasks"])
 
 
 
