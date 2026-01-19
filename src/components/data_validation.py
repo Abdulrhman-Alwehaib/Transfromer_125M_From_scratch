@@ -7,7 +7,7 @@ import yaml
 
 
 class dataValidation:
-    def __init__(self,constants_class):
+    def __init__(self,constants_class:constants):
         self.constants = constants_class()
         self.config = readYaml(self.constants.CONFIG_FILE_PATH)
         self.dataValidationConfig = self.config["data_validation"]

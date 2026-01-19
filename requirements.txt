@@ -3,3 +3,4 @@ pytorch
 pandas
 numpy
 ensure
+transformers

@@ -17,7 +17,9 @@ data_validation:
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  inputData: artifacts/data_ingestion/data
+  inputData: artifacts/data_ingestion/raw_data.csv
+  targetColumns: "text"
+  
 
 model_trainer:
   root_dir: artifacts/modelTrainer
