@@ -24,7 +24,7 @@ class dataIngestion:
             df = datasetTEMP.to_pandas()
             df.to_csv(self.dataIngestionConfig["resulted_data_folder"],index=False,escapechar='\\')
     
-    def run(self):
+    def execute(self):
         self.getData()
 
 
