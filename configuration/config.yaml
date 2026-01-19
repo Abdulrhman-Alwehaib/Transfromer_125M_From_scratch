@@ -4,6 +4,10 @@ artifacts_root: artifacts
 data_ingestion:
   root_dir: artifacts/data_ingestion
   source_hugging_face: ClusterlabAi/101_billion_arabic_words_dataset
+  fileDomain: "data/train-0000[0-2]-of-*.parquet"
+  specficType: "text"
+  resulted_data_folder: artifacts/data_ingestion/data_ingestion
+
 
 data_validation:
   root_dir: artifacts/data_validation
