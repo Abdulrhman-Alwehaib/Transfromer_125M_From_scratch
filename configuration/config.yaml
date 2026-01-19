@@ -6,7 +6,7 @@ data_ingestion:
   source_hugging_face: ClusterlabAi/101_billion_arabic_words_dataset
   fileDomain: "data/train-0000[0-2]-of-*.parquet"
   specficType: "text"
-  resulted_data_folder: artifacts/data_ingestion/data_ingestion
+  resulted_data_file: artifacts/data_ingestion/data_ingestion/raw_data.csv
 
 
 data_validation:
