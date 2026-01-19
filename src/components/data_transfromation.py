@@ -23,10 +23,10 @@ class dataTransformation():
         return re.sub(r'[^\u0600-\u06FF\s0-9]', '', text)
     
     def clean_anomalies(self):
-        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].dropna()
-        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].drop_duplicates()
-        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].astype(str)
-        self.dataFrame = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].apply(self.filter_arabic_only)
+        self.dataFrame = self.dataFrame.dropna()
+        self.dataFrame = self.dataFrame.drop_duplicates()
+        self.dataFrame = self.dataFrame.astype(str)
+        self.dataFrame[self.dataTransfromationConfig["targetColumns"]] = self.dataFrame[self.dataTransfromationConfig["targetColumns"]].apply(self.filter_arabic_only)
     
     def is_valid_line(self,text: str, min_words=20):
         if len(text.split()) < min_words:
