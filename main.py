@@ -11,13 +11,12 @@ import torch.nn as nn
 from torch.utils.data import TensorDataset,DataLoader
 import math
 import Transfromer_Decoder_Arch
-from pipline import piplinetraining
+from pipline.piplinetraining import runPipline
 
 
 if __name__ == "__main__":
     constantsOBJ = constants()
-    piplineObj = piplinetraining(constantsOBJ)
-    pipline = piplineObj.runPipline()
+    pipline = runPipline(constantsOBJ)
 
     pipline.dataIngestionExecute()
     pipline.dataValidationExecute()

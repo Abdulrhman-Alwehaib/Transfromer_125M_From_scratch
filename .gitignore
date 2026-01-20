@@ -15,5 +15,6 @@ data_transfromation/*
 !data_transfromation/.gitkeep
 raw_data/*
 !raw_data/.gitkeep
+!.github/
 .github/*
 !.github/workflows/.gitkeep
