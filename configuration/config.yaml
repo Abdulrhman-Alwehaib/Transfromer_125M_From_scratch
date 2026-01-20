@@ -23,6 +23,10 @@ data_transformation:
   inputIDS: artifacts/data_transformation/input_ids.npy
   InputMasks: artifacts/data_transformation/attention_masks.npy
 
+
+
 model_trainer:
   root_dir: artifacts/modelTrainer
-  inputData: artifacts/data_transformation/samsum_dataset
+  inputDataProccessed: artifacts/data_transformation/input_ids.npy
+  inputDataMASKS: artifacts/data_transformation/attention_masks.npy
+
