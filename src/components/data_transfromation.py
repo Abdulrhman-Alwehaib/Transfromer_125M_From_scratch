@@ -88,6 +88,9 @@ class dataTransformation():
         torch.save(IDs,self.dataTransfromationConfig["inputIDS"])
         torch.save(masks,self.dataTransfromationConfig["InputMasks"])
 
+    def execute(self):
+        self.transformation()
+
 
 
 

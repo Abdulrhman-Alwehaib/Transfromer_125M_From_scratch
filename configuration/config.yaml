@@ -27,6 +27,8 @@ data_transformation:
 
 model_trainer:
   root_dir: artifacts/modelTrainer
+  tokenizer: artifacts/TOKENIZER
   inputDataProccessed: artifacts/data_transformation/input_ids.npy
   inputDataMASKS: artifacts/data_transformation/attention_masks.npy
+  trainedModel: artifacts/modelTrainer
 
