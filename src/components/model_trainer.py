@@ -36,7 +36,8 @@ class modelTrainer():
                                   )
         self.model = self.model.to(self.hyperParameters["device"])
         self.optimizer = torch.optim.AdamW(self.model.parameters(),self.hyperParameters["learning_rate"])
-        self.lossFN = nn.CrossEntropyLoss(ignore_index=self.modelTrainerConfig["tokenizer"].pad_token_id)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.modelTrainerConfig["tokenizer_path"])
+        self.lossFN = nn.CrossEntropyLoss(ignore_index=self.tokenizer.pad_token_id)
 
         split_idx = int(0.95 * len(self.proccessedData))
         train_ds = TensorDataset(self.proccessedData[:split_idx], self.proccessedDataMASK[:split_idx])

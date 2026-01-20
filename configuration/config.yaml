@@ -32,3 +32,6 @@ model_trainer:
   inputDataMASKS: artifacts/data_transformation/attention_masks.npy
   trainedModel: artifacts/modelTrainer
 
+inference:
+  tokenizer: artifacts/TOKENIZER
+  trainedModel: artifacts/modelTrainer
